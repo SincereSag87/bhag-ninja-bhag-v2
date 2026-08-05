@@ -5,6 +5,7 @@ export const TextureKeys = {
   Spike: 'tex-spike',
   Beam: 'tex-beam',
   Coin: 'tex-coin',
+  Energy: 'tex-energy',
   Enemy: 'tex-enemy',
 } as const;
 

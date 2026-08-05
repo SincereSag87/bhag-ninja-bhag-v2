@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import {
   BEAM_HEIGHT,
   BEAM_WIDTH,
+  ENEMY_HEIGHT,
+  ENEMY_WIDTH,
   GAME_HEIGHT,
   GAME_WIDTH,
   PLAYER_HEIGHT,
@@ -86,9 +88,16 @@ export class PreloadScene extends Phaser.Scene {
     graphics.generateTexture(TextureKeys.Coin, 32, 32);
 
     graphics.clear();
+    graphics.fillStyle(0x3fd2ff, 1);
+    graphics.fillCircle(14, 14, 14);
+    graphics.fillStyle(0xffffff, 1);
+    graphics.fillCircle(14, 14, 5);
+    graphics.generateTexture(TextureKeys.Energy, 28, 28);
+
+    graphics.clear();
     graphics.fillStyle(0x6b2fbf, 1);
-    graphics.fillRoundedRect(0, 0, 48, 56, 6);
-    graphics.generateTexture(TextureKeys.Enemy, 48, 56);
+    graphics.fillRoundedRect(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT, 6);
+    graphics.generateTexture(TextureKeys.Enemy, ENEMY_WIDTH, ENEMY_HEIGHT);
 
     graphics.destroy();
   }

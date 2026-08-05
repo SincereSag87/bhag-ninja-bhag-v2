@@ -16,8 +16,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private jumpsUsed = 0;
   private isSliding = false;
   private slideEndAt = 0;
+  private isPaused = false;
   private readonly inputPlugin: Phaser.Input.InputPlugin;
   private readonly keyboardPlugin?: Phaser.Input.Keyboard.KeyboardPlugin;
+  private readonly tweensManager: Phaser.Tweens.TweenManager;
+  private readonly timeManager: Phaser.Time.Clock;
 
   constructor(scene: Phaser.Scene, x: number) {
     super(scene, x, GROUND_Y, TextureKeys.Player);
@@ -30,6 +33,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.inputPlugin = scene.input;
     this.keyboardPlugin = scene.input.keyboard ?? undefined;
+    this.tweensManager = scene.tweens;
+    this.timeManager = scene.time;
 
     this.keyboardPlugin?.on('keydown-SPACE', this.handleJumpInput, this);
     this.keyboardPlugin?.on('keydown-UP', this.handleJumpInput, this);
@@ -43,18 +48,39 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     return (this.body as Phaser.Physics.Arcade.Body).blocked.down;
   }
 
+  setPaused(paused: boolean): void {
+    this.isPaused = paused;
+  }
+
+  playInvulnerabilityEffect(durationMs: number, tintColor: number): void {
+    this.tweensManager.killTweensOf(this);
+    this.setTint(tintColor);
+    this.tweensManager.add({
+      targets: this,
+      alpha: 0.35,
+      duration: 120,
+      yoyo: true,
+      repeat: -1,
+    });
+    this.timeManager.delayedCall(durationMs, () => {
+      this.tweensManager.killTweensOf(this);
+      this.setAlpha(1);
+      this.clearTint();
+    });
+  }
+
   update(): void {
     if (this.isGrounded) {
       this.jumpsUsed = 0;
     }
 
-    if (this.isSliding && this.scene.time.now >= this.slideEndAt) {
+    if (this.isSliding && this.timeManager.now >= this.slideEndAt) {
       this.standUp();
     }
   }
 
   private handleJumpInput(): void {
-    if (this.isSliding) {
+    if (this.isPaused || this.isSliding) {
       return;
     }
     if (!canJump(this.jumpsUsed, MAX_JUMPS)) {
@@ -67,12 +93,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private handleSlideInput(): void {
-    if (!this.isGrounded || this.isSliding) {
+    if (this.isPaused || !this.isGrounded || this.isSliding) {
       return;
     }
 
     this.isSliding = true;
-    this.slideEndAt = this.scene.time.now + SLIDE_DURATION_MS;
+    this.slideEndAt = this.timeManager.now + SLIDE_DURATION_MS;
     this.setTexture(TextureKeys.PlayerSlide);
     this.setSize(PLAYER_WIDTH + 16, SLIDE_HEIGHT);
   }
@@ -94,6 +120,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.keyboardPlugin?.off('keydown-DOWN', this.handleSlideInput, this);
     this.keyboardPlugin?.off('keydown-S', this.handleSlideInput, this);
     this.inputPlugin.off(Phaser.Input.Events.POINTER_DOWN, this.handleJumpInput, this);
+    this.tweensManager.killTweensOf(this);
     super.destroy(fromScene);
   }
 }
