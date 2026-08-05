@@ -1,5 +1,15 @@
 import Phaser from 'phaser';
-import { GAME_HEIGHT, GAME_WIDTH } from '../config/GameConfig.ts';
+import {
+  BEAM_HEIGHT,
+  BEAM_WIDTH,
+  GAME_HEIGHT,
+  GAME_WIDTH,
+  PLAYER_HEIGHT,
+  PLAYER_WIDTH,
+  SLIDE_HEIGHT,
+  SPIKE_HEIGHT,
+  SPIKE_WIDTH,
+} from '../config/GameConfig.ts';
 import { SceneKeys } from '../config/SceneKeys.ts';
 import { TextureKeys } from '../config/TextureKeys.ts';
 
@@ -47,8 +57,13 @@ export class PreloadScene extends Phaser.Scene {
     const graphics = this.add.graphics();
 
     graphics.fillStyle(0xff6b35, 1);
-    graphics.fillRoundedRect(0, 0, 48, 64, 8);
-    graphics.generateTexture(TextureKeys.Player, 48, 64);
+    graphics.fillRoundedRect(0, 0, PLAYER_WIDTH, PLAYER_HEIGHT, 8);
+    graphics.generateTexture(TextureKeys.Player, PLAYER_WIDTH, PLAYER_HEIGHT);
+
+    graphics.clear();
+    graphics.fillStyle(0xff6b35, 1);
+    graphics.fillRoundedRect(0, 0, PLAYER_WIDTH + 16, SLIDE_HEIGHT, 8);
+    graphics.generateTexture(TextureKeys.PlayerSlide, PLAYER_WIDTH + 16, SLIDE_HEIGHT);
 
     graphics.clear();
     graphics.fillStyle(0x3a3a4d, 1);
@@ -57,8 +72,13 @@ export class PreloadScene extends Phaser.Scene {
 
     graphics.clear();
     graphics.fillStyle(0x8b3a3a, 1);
-    graphics.fillTriangle(0, 48, 24, 0, 48, 48);
-    graphics.generateTexture(TextureKeys.Obstacle, 48, 48);
+    graphics.fillTriangle(0, SPIKE_HEIGHT, SPIKE_WIDTH / 2, 0, SPIKE_WIDTH, SPIKE_HEIGHT);
+    graphics.generateTexture(TextureKeys.Spike, SPIKE_WIDTH, SPIKE_HEIGHT);
+
+    graphics.clear();
+    graphics.fillStyle(0xb35a3a, 1);
+    graphics.fillRoundedRect(0, 0, BEAM_WIDTH, BEAM_HEIGHT, 4);
+    graphics.generateTexture(TextureKeys.Beam, BEAM_WIDTH, BEAM_HEIGHT);
 
     graphics.clear();
     graphics.fillStyle(0xffd23f, 1);

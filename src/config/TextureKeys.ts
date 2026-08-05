@@ -1,7 +1,9 @@
 export const TextureKeys = {
   Player: 'tex-player',
+  PlayerSlide: 'tex-player-slide',
   Ground: 'tex-ground',
-  Obstacle: 'tex-obstacle',
+  Spike: 'tex-spike',
+  Beam: 'tex-beam',
   Coin: 'tex-coin',
   Enemy: 'tex-enemy',
 } as const;
