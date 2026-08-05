@@ -5,6 +5,8 @@ import { PreloadScene } from '../scenes/PreloadScene.ts';
 import { MenuScene } from '../scenes/MenuScene.ts';
 import { GameScene } from '../scenes/GameScene.ts';
 import { GameOverScene } from '../scenes/GameOverScene.ts';
+import { HighScoresScene } from '../scenes/HighScoresScene.ts';
+import { SettingsScene } from '../scenes/SettingsScene.ts';
 
 export const phaserConfig: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -26,5 +28,5 @@ export const phaserConfig: Phaser.Types.Core.GameConfig = {
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
   },
-  scene: [BootScene, PreloadScene, MenuScene, GameScene, GameOverScene],
+  scene: [BootScene, PreloadScene, MenuScene, GameScene, GameOverScene, HighScoresScene, SettingsScene],
 };

@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import {
   BEAM_HEIGHT,
   BEAM_WIDTH,
+  BOSS_BOLT_SIZE,
+  BOSS_HEIGHT,
+  BOSS_WIDTH,
   ENEMY_HEIGHT,
   ENEMY_WIDTH,
   GAME_HEIGHT,
@@ -98,6 +101,24 @@ export class PreloadScene extends Phaser.Scene {
     graphics.fillStyle(0x6b2fbf, 1);
     graphics.fillRoundedRect(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT, 6);
     graphics.generateTexture(TextureKeys.Enemy, ENEMY_WIDTH, ENEMY_HEIGHT);
+
+    graphics.clear();
+    graphics.fillStyle(0x4a1030, 1);
+    graphics.fillRoundedRect(0, 0, BOSS_WIDTH, BOSS_HEIGHT, 12);
+    graphics.fillStyle(0xff4444, 1);
+    graphics.fillCircle(BOSS_WIDTH * 0.3, BOSS_HEIGHT * 0.3, 8);
+    graphics.fillCircle(BOSS_WIDTH * 0.7, BOSS_HEIGHT * 0.3, 8);
+    graphics.generateTexture(TextureKeys.Boss, BOSS_WIDTH, BOSS_HEIGHT);
+
+    graphics.clear();
+    graphics.fillStyle(0xff2255, 1);
+    graphics.fillCircle(BOSS_BOLT_SIZE / 2, BOSS_BOLT_SIZE / 2, BOSS_BOLT_SIZE / 2);
+    graphics.generateTexture(TextureKeys.BossBolt, BOSS_BOLT_SIZE, BOSS_BOLT_SIZE);
+
+    graphics.clear();
+    graphics.fillStyle(0xffffff, 1);
+    graphics.fillCircle(6, 6, 6);
+    graphics.generateTexture(TextureKeys.Spark, 12, 12);
 
     graphics.destroy();
   }

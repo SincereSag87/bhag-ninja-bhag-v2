@@ -32,12 +32,20 @@ export class ObstacleSpawner {
   readonly group: Phaser.Physics.Arcade.Group;
   private readonly scene: Phaser.Scene;
   private readonly getDistance: () => number;
+  private enabled = true;
 
   constructor(scene: Phaser.Scene, getDistance: () => number) {
     this.scene = scene;
     this.getDistance = getDistance;
     this.group = scene.physics.add.group({ allowGravity: false });
     this.scheduleNext();
+  }
+
+  setEnabled(enabled: boolean): void {
+    this.enabled = enabled;
+    if (enabled) {
+      this.scheduleNext();
+    }
   }
 
   update(): void {
@@ -61,6 +69,9 @@ export class ObstacleSpawner {
     );
     const delay = randomSpawnDelay(range.min, range.max);
     this.scene.time.delayedCall(delay, () => {
+      if (!this.enabled) {
+        return;
+      }
       this.spawnObstacle();
       this.scheduleNext();
     });

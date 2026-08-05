@@ -7,6 +7,9 @@ export const TextureKeys = {
   Coin: 'tex-coin',
   Energy: 'tex-energy',
   Enemy: 'tex-enemy',
+  Boss: 'tex-boss',
+  BossBolt: 'tex-boss-bolt',
+  Spark: 'tex-spark',
 } as const;
 
 export type TextureKey = (typeof TextureKeys)[keyof typeof TextureKeys];

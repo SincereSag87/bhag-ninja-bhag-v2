@@ -46,8 +46,24 @@ export const PICKUP_ENERGY_CHANCE = 0.25;
 export const COIN_HEIGHT_ABOVE_GROUND = 90;
 export const ENERGY_HEIGHT_ABOVE_GROUND = 130;
 
+export const BOSS_TRIGGER_DISTANCE = 1200;
+export const BOSS_INTERVAL_METERS = 1800;
+export const BOSS_DURATION_MS = 12_000;
+export const BOSS_PROJECTILE_MIN_MS = 650;
+export const BOSS_PROJECTILE_MAX_MS = 1100;
+export const BOSS_SCORE_BONUS = 500;
+export const BOSS_WIDTH = 96;
+export const BOSS_HEIGHT = 108;
+export const BOSS_BOLT_SIZE = 22;
+export const BOSS_GRACE_MS = 1000;
+
 export const STORAGE_KEYS = {
-  HighScore: 'bhagNinjaBhag.highScore',
+  Leaderboard: 'bhagNinjaBhag.leaderboard',
   Settings: 'bhagNinjaBhag.settings',
   Unlocks: 'bhagNinjaBhag.unlocks',
 } as const;
+
+export const LEADERBOARD_SIZE = 5;
+
+export const DEFAULT_MUSIC_VOLUME = 0.5;
+export const DEFAULT_SFX_VOLUME = 0.7;

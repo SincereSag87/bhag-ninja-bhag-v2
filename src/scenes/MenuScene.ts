@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../config/GameConfig.ts';
 import { SceneKeys } from '../config/SceneKeys.ts';
-import { getHighScore } from '../systems/HighScoreStore.ts';
+import { audioSystem } from '../systems/AudioSystem.ts';
+import { getTopScore } from '../systems/LeaderboardStore.ts';
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -11,8 +12,11 @@ export class MenuScene extends Phaser.Scene {
   create(): void {
     const centerX = GAME_WIDTH / 2;
 
+    audioSystem.unlock();
+    audioSystem.startMusic();
+
     this.add
-      .text(centerX, GAME_HEIGHT / 2 - 100, 'BHAG NINJA BHAG', {
+      .text(centerX, GAME_HEIGHT / 2 - 140, 'BHAG NINJA BHAG', {
         fontFamily: 'sans-serif',
         fontSize: '48px',
         color: '#ff6b35',
@@ -21,7 +25,7 @@ export class MenuScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(centerX, GAME_HEIGHT / 2 - 40, `High Score: ${getHighScore()}`, {
+      .text(centerX, GAME_HEIGHT / 2 - 80, `High Score: ${getTopScore()}`, {
         fontFamily: 'sans-serif',
         fontSize: '20px',
         color: '#ffffff',
@@ -29,7 +33,7 @@ export class MenuScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     const prompt = this.add
-      .text(centerX, GAME_HEIGHT / 2 + 40, 'Press SPACE or Tap to Start', {
+      .text(centerX, GAME_HEIGHT / 2, 'Press SPACE or Tap to Start', {
         fontFamily: 'sans-serif',
         fontSize: '24px',
         color: '#ffd23f',
@@ -44,11 +48,22 @@ export class MenuScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.add
+      .text(centerX, GAME_HEIGHT / 2 + 60, 'H: High Scores   |   S: Settings', {
+        fontFamily: 'sans-serif',
+        fontSize: '18px',
+        color: '#8888aa',
+      })
+      .setOrigin(0.5);
+
     this.input.keyboard?.once('keydown-SPACE', () => this.startGame());
     this.input.once(Phaser.Input.Events.POINTER_DOWN, () => this.startGame());
+    this.input.keyboard?.once('keydown-H', () => this.scene.start(SceneKeys.HighScores));
+    this.input.keyboard?.once('keydown-S', () => this.scene.start(SceneKeys.Settings, { returnScene: SceneKeys.Menu }));
   }
 
   private startGame(): void {
+    audioSystem.playUiSelect();
     this.scene.start(SceneKeys.Game);
   }
 }

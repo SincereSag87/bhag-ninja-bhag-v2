@@ -24,12 +24,20 @@ export class PickupSpawner {
   readonly group: Phaser.Physics.Arcade.Group;
   private readonly scene: Phaser.Scene;
   private readonly getDistance: () => number;
+  private enabled = true;
 
   constructor(scene: Phaser.Scene, getDistance: () => number) {
     this.scene = scene;
     this.getDistance = getDistance;
     this.group = scene.physics.add.group({ allowGravity: false });
     this.scheduleNext();
+  }
+
+  setEnabled(enabled: boolean): void {
+    this.enabled = enabled;
+    if (enabled) {
+      this.scheduleNext();
+    }
   }
 
   update(): void {
@@ -44,6 +52,9 @@ export class PickupSpawner {
   private scheduleNext(): void {
     const delay = randomSpawnDelay(PICKUP_MIN_SPAWN_MS, PICKUP_MAX_SPAWN_MS);
     this.scene.time.delayedCall(delay, () => {
+      if (!this.enabled) {
+        return;
+      }
       this.spawnPickup();
       this.scheduleNext();
     });
